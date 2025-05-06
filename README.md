@@ -207,3 +207,6 @@ aws ec2 describe-route-server-peers --region eu-west-1
     ]
 }
 ```
+### Initiate BGP sessions from the devices
+Setup FGT to iniiate a BGP session
+
