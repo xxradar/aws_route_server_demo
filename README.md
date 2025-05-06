@@ -71,7 +71,10 @@ echo $RSID
 
 ### Associate route server with a VPC
 ```
-aws ec2 associate-route-server --route-server-id $RSID --vpc-id vpc-571faf2e
+VPC="vpc-571faf2e"
+```
+```
+aws ec2 associate-route-server --route-server-id $RSID --vpc-id $VPC
 ```
 ```
 {
@@ -101,7 +104,10 @@ aws ec2 get-route-server-associations --route-server-id $RSID
 **Note:** After a few seconds `State=associated`
 ### Create route server endpoints
 ```
-aws ec2 create-route-server-endpoint --route-server-id $RSID --subnet-id subnet-7a0ae703
+SUBNET="vpc-571faf2e"
+```
+```
+aws ec2 create-route-server-endpoint --route-server-id $RSID --subnet-id $SUBNET
 ```
 ```
 {
@@ -140,7 +146,10 @@ echo $RSIDE
 ```
 ### Enable route server propagation 
 ```
-aws ec2 enable-route-server-propagation --route-table-id rtb-1be73d63 --route-server-id $RSID
+RT="rtb-1be73d63"
+```
+```
+aws ec2 enable-route-server-propagation --route-table-id $RT --route-server-id $RSID
 ```
 ```
 {
@@ -231,6 +240,9 @@ Setup FGT to iniiate a BGP session
 
 ### Cleanup
 ```
-aws ec2 disable-route-server-route-propagation --route-table-id rtb-1 --route-server-id $RSID
-aws ec2 delete-route-server-peer --route-server-peer-id rsp-1
-aws ec2 delete-route-server-endpoint --route-server-endpoint-id rse-1
+aws ec2 disable-route-server-route-propagation --route-table-id $RT --route-server-id $RSID
+aws ec2 delete-route-server-peer --route-server-peer-id "rse-0b3aab44fa6f0bb15"
+aws ec2 delete-route-server-endpoint --route-server-endpoint-id $RSIDE
+aws ec2 disassociate-route-server --route-server-id $RSID --vpc-id $VPC
+aws ec2 delete-route-server --route-server-id $RSID
+```
