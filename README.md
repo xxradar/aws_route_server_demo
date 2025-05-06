@@ -38,7 +38,7 @@ aws ec2 create-route-server --amazon-side-asn 65000 --region eu-west-1
 **Note:** `State=pending`
 #### Check the route server state
 ```
- aws ec2 describe-route-servers --region eu-west-1
+aws ec2 describe-route-servers --region eu-west-1
 ```
 ```
 {
@@ -86,3 +86,123 @@ aws ec2 get-route-server-associations --route-server-id rs-054f70d70eff70cc6 --r
 }
 ```
 **Note:** After a few seconds `State=associated`
+### Creat route server endpoints
+```
+aws ec2 create-route-server-endpoint --route-server-id rs-054f70d70eff70cc6 --subnet-id subnet-7a0ae703 --region eu-west-1
+```
+```
+{
+    "RouteServerEndpoint": {
+        "RouteServerId": "rs-054f70d70eff70cc6",
+        "RouteServerEndpointId": "rse-0b3aab44fa6f0bb15",
+        "VpcId": "vpc-571faf2e",
+        "SubnetId": "subnet-7a0ae703",
+        "State": "pending"
+    }
+}
+```
+```
+aws ec2 describe-route-server-endpoints --region eu-west-1
+```
+```
+{
+    "RouteServerEndpoints": [
+        {
+            "RouteServerId": "rs-054f70d70eff70cc6",
+            "RouteServerEndpointId": "rse-0b3aab44fa6f0bb15",
+            "VpcId": "vpc-571faf2e",
+            "SubnetId": "subnet-7a0ae703",
+            "EniId": "eni-0e9d73874dccdfea8",
+            "EniAddress": "172.31.14.193",
+            "State": "available",
+            "Tags": []
+        }
+    ]
+}
+```
+### Enable route server propagation 
+```
+aws ec2 enable-route-server-propagation --route-table-id rtb-1be73d63 --route-server-id rs-054f70d70eff70cc6 --region eu-west-1
+```
+```
+{
+    "RouteServerPropagation": {
+        "RouteServerId": "rs-054f70d70eff70cc6",
+        "RouteTableId": "rtb-1be73d63",
+        "State": "pending"
+    }
+}
+```
+```
+aws ec2 get-route-server-propagations --route-server-id rs-054f70d70eff70cc6 --region eu-west-1
+```
+```
+{
+    "RouteServerPropagations": [
+        {
+            "RouteServerId": "rs-054f70d70eff70cc6",
+            "RouteTableId": "rtb-1be73d63",
+            "State": "available"
+        }
+    ]
+}
+```
+### Create route server peer
+```
+aws ec2 create-route-server-peer --route-server-endpoint-id rse-0b3aab44fa6f0bb15 --peer-address 10.0.2.3 --bgp-options PeerAsn=65001,PeerLivenessDetection=bfd --region eu-west-1
+```
+```
+{
+    "RouteServerPeer": {
+        "RouteServerPeerId": "rsp-0e1c240ae33a4f642",
+        "RouteServerEndpointId": "rse-0b3aab44fa6f0bb15",
+        "RouteServerId": "rs-054f70d70eff70cc6",
+        "VpcId": "vpc-571faf2e",
+        "SubnetId": "subnet-7a0ae703",
+        "State": "pending",
+        "EndpointEniId": "eni-0e9d73874dccdfea8",
+        "EndpointEniAddress": "172.31.14.193",
+        "PeerAddress": "10.0.2.3",
+        "BgpOptions": {
+            "PeerAsn": 65001,
+            "PeerLivenessDetection": "bfd"
+        },
+        "BgpStatus": {
+            "Status": "down"
+        },
+        "BfdStatus": {
+            "Status": "down"
+        }
+    }
+}
+```
+```
+aws ec2 describe-route-server-peers --region eu-west-1
+```
+{
+    "RouteServerPeers": [
+        {
+            "RouteServerPeerId": "rsp-0e1c240ae33a4f642",
+            "RouteServerEndpointId": "rse-0b3aab44fa6f0bb15",
+            "RouteServerId": "rs-054f70d70eff70cc6",
+            "VpcId": "vpc-571faf2e",
+            "SubnetId": "subnet-7a0ae703",
+            "State": "available",
+            "EndpointEniId": "eni-0e9d73874dccdfea8",
+            "EndpointEniAddress": "172.31.14.193",
+            "PeerAddress": "10.0.2.3",
+            "BgpOptions": {
+                "PeerAsn": 65001,
+                "PeerLivenessDetection": "bfd"
+            },
+            "BgpStatus": {
+                "Status": "down"
+            },
+            "BfdStatus": {
+                "Status": "down"
+            },
+            "Tags": []
+        }
+    ]
+}
+```
