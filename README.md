@@ -204,7 +204,7 @@ aws ec2 create-route-server-peer --route-server-endpoint-id $RSIDE --peer-addres
 }
 ```
 ```
-aws ec2 describe-route-server-peers --region eu-west-1
+aws ec2 describe-route-server-peers
 ```
 ```
 {
