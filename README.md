@@ -1,5 +1,6 @@
 # VPC Route Server
 This tutorial walks you through the process of setting up and configuring VPC Route Server to enable dynamic routing in your VPC. 
+https://docs.aws.amazon.com/vpc/latest/userguide/route-server-tutorial.html
 ### Configure required IAM Role permissions 
 #### Create a IAM policy
 ```
@@ -227,3 +228,9 @@ aws ec2 describe-route-server-peers --region eu-west-1
 ### Initiate BGP sessions from the devices
 Setup FGT to iniiate a BGP session
 
+
+### Cleanup
+```
+aws ec2 disable-route-server-route-propagation --route-table-id rtb-1 --route-server-id $RSID
+aws ec2 delete-route-server-peer --route-server-peer-id rsp-1
+aws ec2 delete-route-server-endpoint --route-server-endpoint-id rse-1
