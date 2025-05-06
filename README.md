@@ -267,7 +267,7 @@ echo $RSPID
 Setup FGT to iniiate a BGP session
 
 
-### Cleanup
+### 07. Cleanup
 ```
 aws ec2 disable-route-server-propagation --route-table-id $RT --route-server-id $RSID
 aws ec2 delete-route-server-peer --route-server-peer-id $RSPID
