@@ -107,7 +107,7 @@ aws ec2 get-route-server-associations --route-server-id $RSID
 **Note:** After a few seconds `State=associated`
 ### 03. Create route server endpoints
 ```
-SUBNET="vpc-571faf2e"
+SUBNET="subnet-7a0ae703"
 ```
 #### Create route server endpoints
 
