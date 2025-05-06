@@ -49,8 +49,8 @@ OUTPUT=$(aws ec2 describe-route-servers)
 echo $OUTPUT
 ```
 ```
-RS=$(echo $OUTPUT | jq -r '.RouteServers[0].RouteServerId')
-echo $RS
+RSID=$(echo $OUTPUT | jq -r '.RouteServers[0].RouteServerId')
+echo $RSID
 ```
 ```
 {
@@ -70,7 +70,7 @@ echo $RS
 
 ### Associate route server with a VPC
 ```
-aws ec2 associate-route-server --route-server-id rs-054f70d70eff70cc6 --vpc-id vpc-571faf2e --region eu-west-1
+aws ec2 associate-route-server --route-server-id $RSID --vpc-id vpc-571faf2e
 ```
 ```
 {
@@ -84,7 +84,7 @@ aws ec2 associate-route-server --route-server-id rs-054f70d70eff70cc6 --vpc-id v
 **Note:** `State=associating`
 
 ```
-aws ec2 get-route-server-associations --route-server-id rs-054f70d70eff70cc6 --region eu-west-1
+aws ec2 get-route-server-associations --route-server-id $RSID
 ```
 ```
 {
@@ -100,7 +100,7 @@ aws ec2 get-route-server-associations --route-server-id rs-054f70d70eff70cc6 --r
 **Note:** After a few seconds `State=associated`
 ### Create route server endpoints
 ```
-aws ec2 create-route-server-endpoint --route-server-id rs-054f70d70eff70cc6 --subnet-id subnet-7a0ae703 --region eu-west-1
+aws ec2 create-route-server-endpoint --route-server-id $RSID --subnet-id subnet-7a0ae703
 ```
 ```
 {
@@ -114,7 +114,7 @@ aws ec2 create-route-server-endpoint --route-server-id rs-054f70d70eff70cc6 --su
 }
 ```
 ```
-aws ec2 describe-route-server-endpoints --region eu-west-1
+aws ec2 describe-route-server-endpoints
 ```
 ```
 {
@@ -134,8 +134,7 @@ aws ec2 describe-route-server-endpoints --region eu-west-1
 ```
 ### Enable route server propagation 
 ```
-aws ec2 enable-route-server-propagation --route-table-id rtb-1be73d63 --route-server-id rs-054f70d70eff70cc6 --region eu-west-1
-```
+aws ec2 enable-route-server-propagation --route-table-id rtb-1be73d63 --route-server-id $RSID
 ```
 {
     "RouteServerPropagation": {
@@ -146,7 +145,7 @@ aws ec2 enable-route-server-propagation --route-table-id rtb-1be73d63 --route-se
 }
 ```
 ```
-aws ec2 get-route-server-propagations --route-server-id rs-054f70d70eff70cc6 --region eu-west-1
+aws ec2 get-route-server-propagations --route-server-id $RSID 
 ```
 ```
 {
