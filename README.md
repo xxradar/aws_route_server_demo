@@ -69,7 +69,8 @@ echo $RSID
 ```
 **Note:** After a few seconds `State=available`
 
-### 02. Associate route server with a VPC
+### 02. Route server association
+####  Associate route server with a VPC
 ```
 VPC="vpc-571faf2e"
 ```
@@ -86,7 +87,7 @@ aws ec2 associate-route-server --route-server-id $RSID --vpc-id $VPC
 }
 ```
 **Note:** `State=associating`
-
+####  Check the association
 ```
 aws ec2 get-route-server-associations --route-server-id $RSID
 ```
