@@ -20,7 +20,7 @@ aws iam attach-role-policy \
   --role-name RouteServerRole \
   --policy-arn arn:aws:iam::974654858447:policy/RouteServerPolicy
 ```
-### Route Server creation
+### 01. Route Server creation
 #### Pre-requisites
 Update you aws cli if necessary to the latest version.
 
@@ -69,7 +69,7 @@ echo $RSID
 ```
 **Note:** After a few seconds `State=available`
 
-### Associate route server with a VPC
+### 02. Associate route server with a VPC
 ```
 VPC="vpc-571faf2e"
 ```
@@ -102,7 +102,7 @@ aws ec2 get-route-server-associations --route-server-id $RSID
 }
 ```
 **Note:** After a few seconds `State=associated`
-### Route server endpoints
+### 03. Route server endpoints
 ```
 SUBNET="vpc-571faf2e"
 ```
@@ -149,7 +149,7 @@ echo $RSIDE
 ```
 **Note:** After a few seconds `State=available`
 
-### Enable route server propagation 
+### 04. Enable route server propagation 
 ```
 RT="rtb-1be73d63"
 ```
@@ -179,7 +179,7 @@ aws ec2 get-route-server-propagations --route-server-id $RSID
     ]
 }
 ```
-### Create route server peer
+### 05. Create route server peer
 ```
 aws ec2 create-route-server-peer --route-server-endpoint-id $RSIDE --peer-address 10.0.2.3 --bgp-options PeerAsn=65001,PeerLivenessDetection=bfd
 ```
@@ -243,7 +243,7 @@ aws ec2 describe-route-server-peers
 RSPID=$(aws ec2 describe-route-server-peers | jq -r '.RouteServerPeers[0].RouteServerPeerId')
 echo $RSPID
 ```
-### Initiate BGP sessions from the devices
+### 06. Initiate BGP sessions from the devices
 Setup FGT to iniiate a BGP session
 
 
