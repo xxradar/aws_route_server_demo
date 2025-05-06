@@ -20,7 +20,7 @@ aws iam attach-role-policy \
   --role-name RouteServerRole \
   --policy-arn arn:aws:iam::974654858447:policy/RouteServerPolicy
 ```
-### 01. Route Server creation
+### Route Server creation
 #### Pre-requisites
 Update you aws cli if necessary to the latest version.
 
@@ -69,11 +69,12 @@ echo $RSID
 ```
 **Note:** After a few seconds `State=available`
 
-### 02. Route server association
-####  Associate route server with a VPC
+### Associate route server with a VPC
 ```
 VPC="vpc-571faf2e"
 ```
+#### Route server and VPC association
+
 ```
 aws ec2 associate-route-server --route-server-id $RSID --vpc-id $VPC
 ```
@@ -87,7 +88,8 @@ aws ec2 associate-route-server --route-server-id $RSID --vpc-id $VPC
 }
 ```
 **Note:** `State=associating`
-####  Check the association
+
+#### Check route server and VPC association
 ```
 aws ec2 get-route-server-associations --route-server-id $RSID
 ```
@@ -103,11 +105,12 @@ aws ec2 get-route-server-associations --route-server-id $RSID
 }
 ```
 **Note:** After a few seconds `State=associated`
-### 03. Route server endpoints
+### Create route server endpoints
 ```
 SUBNET="vpc-571faf2e"
 ```
 #### Create route server endpoints
+
 ```
 aws ec2 create-route-server-endpoint --route-server-id $RSID --subnet-id $SUBNET
 ```
@@ -122,12 +125,14 @@ aws ec2 create-route-server-endpoint --route-server-id $RSID --subnet-id $SUBNET
     }
 }
 ```
+**Note:** `State=pending`
+
+#### Check route server endpoints
+
 ```
 OUTPUT=$(aws ec2 describe-route-server-endpoints)
 echo $OUTPUT
 ```
-**Note:** `State=pending`
-#### Check route server endpoints
 ```
 RSIDE=$(echo $OUTPUT | jq -r '.RouteServerEndpoints[0].RouteServerEndpointId')
 echo $RSIDE
@@ -150,10 +155,12 @@ echo $RSIDE
 ```
 **Note:** After a few seconds `State=available`
 
-### 04. Enable route server propagation 
+### Enable route server propagation 
 ```
 RT="rtb-1be73d63"
 ```
+#### Enable  route server propagation
+
 ```
 aws ec2 enable-route-server-propagation --route-table-id $RT --route-server-id $RSID
 ```
@@ -166,6 +173,10 @@ aws ec2 enable-route-server-propagation --route-table-id $RT --route-server-id $
     }
 }
 ```
+**Note:** `State=pending`
+
+#### Check route server propagation 
+
 ```
 aws ec2 get-route-server-propagations --route-server-id $RSID 
 ```
@@ -180,7 +191,10 @@ aws ec2 get-route-server-propagations --route-server-id $RSID
     ]
 }
 ```
-### 05. Create route server peer
+**Note:** After a few seconds `State=available`
+
+### Route server peers
+#### Create a route server peer
 ```
 aws ec2 create-route-server-peer --route-server-endpoint-id $RSIDE --peer-address 10.0.2.3 --bgp-options PeerAsn=65001,PeerLivenessDetection=bfd
 ```
@@ -209,6 +223,7 @@ aws ec2 create-route-server-peer --route-server-endpoint-id $RSIDE --peer-addres
     }
 }
 ```
+#### Check route server peer creation
 ```
 aws ec2 describe-route-server-peers
 ```
@@ -244,7 +259,9 @@ aws ec2 describe-route-server-peers
 RSPID=$(aws ec2 describe-route-server-peers | jq -r '.RouteServerPeers[0].RouteServerPeerId')
 echo $RSPID
 ```
-### 06. Initiate BGP sessions from the devices
+**Note:**  `Status=down` for `BgpStatus` and `BfdStatus`
+
+### Initiate BGP sessions from the devices
 Setup FGT to iniiate a BGP session
 
 
