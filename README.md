@@ -20,11 +20,16 @@ aws iam attach-role-policy \
   --policy-arn arn:aws:iam::974654858447:policy/RouteServerPolicy
 ```
 ### Route Server creation
-- Check region availability
-- Update you aws cli if necessary
+#### Pre-requisites
+Update you aws cli if necessary to the latest version.
+
+#### Check region availability
+```
+export AWS_DEFAULT_REGION=eu-west-1
+```
 #### Create the route server
 ```
-aws ec2 create-route-server --amazon-side-asn 65000 --region eu-west-1
+aws ec2 create-route-server --amazon-side-asn 65000
 ```
 ```
 {
@@ -40,7 +45,11 @@ aws ec2 create-route-server --amazon-side-asn 65000 --region eu-west-1
 **Note:** `State=pending`
 #### Check the route server state
 ```
-aws ec2 describe-route-servers --region eu-west-1
+OUTPUT=$(aws ec2 describe-route-servers)
+echo $OUTPUT
+```
+```
+RS=$(echo $OUTPUT | jq -r .RouteServers.RouteServerId)
 ```
 ```
 {
