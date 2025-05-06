@@ -88,7 +88,7 @@ aws ec2 get-route-server-associations --route-server-id rs-054f70d70eff70cc6 --r
 }
 ```
 **Note:** After a few seconds `State=associated`
-### Creat route server endpoints
+### Create route server endpoints
 ```
 aws ec2 create-route-server-endpoint --route-server-id rs-054f70d70eff70cc6 --subnet-id subnet-7a0ae703 --region eu-west-1
 ```
