@@ -234,6 +234,10 @@ aws ec2 describe-route-server-peers
     ]
 }
 ```
+```
+RSPID=$(aws ec2 describe-route-server-peers | jq -r '.RouteServerPeers[0].RouteServerPeerId')
+echo $RSPID
+```
 ### Initiate BGP sessions from the devices
 Setup FGT to iniiate a BGP session
 
@@ -241,7 +245,7 @@ Setup FGT to iniiate a BGP session
 ### Cleanup
 ```
 aws ec2 disable-route-server-propagation --route-table-id $RT --route-server-id $RSID
-aws ec2 delete-route-server-peer --route-server-peer-id "rsp-0e1c240ae33a4f642"
+aws ec2 delete-route-server-peer --route-server-peer-id $RSPID
 aws ec2 delete-route-server-endpoint --route-server-endpoint-id $RSIDE
 aws ec2 disassociate-route-server --route-server-id $RSID --vpc-id $VPC
 aws ec2 delete-route-server --route-server-id $RSID
