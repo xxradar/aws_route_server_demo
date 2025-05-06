@@ -179,6 +179,7 @@ aws ec2 create-route-server-peer --route-server-endpoint-id rse-0b3aab44fa6f0bb1
 ```
 aws ec2 describe-route-server-peers --region eu-west-1
 ```
+```
 {
     "RouteServerPeers": [
         {
