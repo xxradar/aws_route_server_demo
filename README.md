@@ -125,7 +125,7 @@ OUTPUT=$(aws ec2 describe-route-server-endpoints)
 echo $OUTPUT
 ```
 ```
-RSIDE=$(echo $OUTPUT |q -r '.RouteServers[0].RouteServerEndpointId')
+RSIDE=$(echo $OUTPUT | jq -r '.RouteServerEndpoints[0].RouteServerEndpointId')
 echo $RSIDE
 ```
 ```
@@ -240,8 +240,8 @@ Setup FGT to iniiate a BGP session
 
 ### Cleanup
 ```
-aws ec2 disable-route-server-route-propagation --route-table-id $RT --route-server-id $RSID
-aws ec2 delete-route-server-peer --route-server-peer-id "rse-0b3aab44fa6f0bb15"
+aws ec2 disable-route-server-propagation --route-table-id $RT --route-server-id $RSID
+aws ec2 delete-route-server-peer --route-server-peer-id "rsp-0e1c240ae33a4f642"
 aws ec2 delete-route-server-endpoint --route-server-endpoint-id $RSIDE
 aws ec2 disassociate-route-server --route-server-id $RSID --vpc-id $VPC
 aws ec2 delete-route-server --route-server-id $RSID
