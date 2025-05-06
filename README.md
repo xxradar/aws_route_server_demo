@@ -114,7 +114,12 @@ aws ec2 create-route-server-endpoint --route-server-id $RSID --subnet-id subnet-
 }
 ```
 ```
-aws ec2 describe-route-server-endpoints
+OUTPUT=$(aws ec2 describe-route-server-endpoints)
+echo $OUTPUT
+```
+```
+RSIDE=$(echo $OUTPUT |q -r '.RouteServers[0].RouteServerEndpointId')
+echo $RSIDE
 ```
 ```
 {
@@ -135,6 +140,7 @@ aws ec2 describe-route-server-endpoints
 ### Enable route server propagation 
 ```
 aws ec2 enable-route-server-propagation --route-table-id rtb-1be73d63 --route-server-id $RSID
+```
 ```
 {
     "RouteServerPropagation": {
@@ -160,7 +166,7 @@ aws ec2 get-route-server-propagations --route-server-id $RSID
 ```
 ### Create route server peer
 ```
-aws ec2 create-route-server-peer --route-server-endpoint-id rse-0b3aab44fa6f0bb15 --peer-address 10.0.2.3 --bgp-options PeerAsn=65001,PeerLivenessDetection=bfd --region eu-west-1
+aws ec2 create-route-server-peer --route-server-endpoint-id $RSIDE --peer-address 10.0.2.3 --bgp-options PeerAsn=65001,PeerLivenessDetection=bfd
 ```
 ```
 {
