@@ -259,7 +259,8 @@ aws ec2 describe-route-server-peers
 RSPID=$(aws ec2 describe-route-server-peers | jq -r '.RouteServerPeers[0].RouteServerPeerId')
 echo $RSPID
 ```
-**Note:**  `Status=down` for `BgpStatus` and `BfdStatus`
+**Note:** After a few seconds `State=available`
+**Note:** `Status=down` for `BgpStatus` and `BfdStatus` remain down until there is a BGP session established
 
 ### 06. Initiate BGP sessions from the devices
 Setup FGT to iniiate a BGP session
