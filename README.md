@@ -35,7 +35,7 @@ aws ec2 create-route-server --amazon-side-asn 65000 --region eu-west-1
     }
 }
 ```
-**Note:** State=pending
+**Note:** `State=pending`
 #### Check the route server state
 ```
  aws ec2 describe-route-servers --region eu-west-1
@@ -54,5 +54,35 @@ aws ec2 create-route-server --amazon-side-asn 65000 --region eu-west-1
     ]
 }
 ```
-**Note:** After a few seconds State=available
+**Note:** After a few seconds `State=available`
 
+### Associate route server with a VPC
+```
+aws ec2 associate-route-server --route-server-id rs-054f70d70eff70cc6 --vpc-id vpc-571faf2e --region eu-west-1
+```
+```
+{
+    "RouteServerAssociation": {
+        "RouteServerId": "rs-054f70d70eff70cc6",
+        "VpcId": "vpc-571faf2e",
+        "State": "associating"
+    }
+}
+```
+**Note:** `State=associating`
+
+```
+aws ec2 get-route-server-associations --route-server-id rs-054f70d70eff70cc6 --region eu-west-1
+```
+```
+{
+    "RouteServerAssociations": [
+        {
+            "RouteServerId": "rs-054f70d70eff70cc6",
+            "VpcId": "vpc-571faf2e",
+            "State": "associated"
+        }
+    ]
+}
+```
+**Note:** After a few seconds `State=associated`
