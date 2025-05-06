@@ -49,7 +49,8 @@ OUTPUT=$(aws ec2 describe-route-servers)
 echo $OUTPUT
 ```
 ```
-RS=$(echo $OUTPUT | jq -r .RouteServers.RouteServerId)
+RS=$(echo $OUTPUT | jq -r '.RouteServers[0].RouteServerId')
+echo $RS
 ```
 ```
 {
