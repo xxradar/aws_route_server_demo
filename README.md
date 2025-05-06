@@ -1,7 +1,7 @@
 # VPC Route Server
 This tutorial walks you through the process of setting up and configuring VPC Route Server to enable dynamic routing in your VPC. <br>
 https://docs.aws.amazon.com/vpc/latest/userguide/route-server-tutorial.html
-### Configure required IAM Role permissions 
+### 00. Configure required IAM Role permissions (optional)
 #### Create a IAM policy
 ```
 aws iam create-policy \
